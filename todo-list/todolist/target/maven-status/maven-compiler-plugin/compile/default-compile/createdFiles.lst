@@ -1,0 +1,5 @@
+com\example\todolist\TodoItem.class
+com\example\todolist\TodoItemRepository.class
+com\example\todolist\TodoItemController.class
+com\example\todolist\Application.class
+com\example\todolist\TodoItemFormData.class

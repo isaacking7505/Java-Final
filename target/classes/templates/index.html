@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>TodoMVC</title>
+    <link rel="stylesheet" th:href="@{/webjars/todomvc-app-css/index.css}">
+</head>
+<body>
+    <section class="todoapp">
+        <header class="header">
+            <h1>todos</h1>
+            <form th:action="@{/}" method="post" th:object="${item}">
+                <input class="new-todo" placeholder="What needs to be done?" 
+                       th:field="*{title}" autofocus>
+            </form>
+        </header>
+        
+        <section class="main" th:if="${totalNumberOfItems > 0}">
+            <input class="toggle-all" type="checkbox" 
+                   th:checked="${numberOfActiveItems == 0}">
+            <label for="toggle-all" th:onclick="'javascript:document.getElementById(\'toggle-all-form\').submit()'">
+                Mark all as complete
+            </label>
+            <form id="toggle-all-form" th:action="@{/toggle-all}" method="post" hidden>
+                <input type="hidden" name="_method" value="put">
+            </form>
+            
+            <ul class="todo-list">
+                <li th:each="item : ${todos}" 
+                    th:classappend="${item.completed} ? 'completed' : ''"
+                    th:insert="~{fragments :: todoItem(${item})}">
+                </li>
+            </ul>
+        </section>
+        
+        <footer class="footer" th:if="${totalNumberOfItems > 0}">
+            <span class="todo-count">
+                <strong th:text="${numberOfActiveItems}">0</strong> items left
+            </span>
+            <ul class="filters">
+                <li><a th:href="@{/?filter=all}" th:classappend="${filter == 'all'} ? 'selected' : ''">All</a></li>
+                <li><a th:href="@{/?filter=active}" th:classappend="${filter == 'active'} ? 'selected' : ''">Active</a></li>
+                <li><a th:href="@{/?filter=completed}" th:classappend="${filter == 'completed'} ? 'selected' : ''">Completed</a></li>
+            </ul>
+            <form th:action="@{/completed}" method="post" th:if="${totalNumberOfItems > numberOfActiveItems}">
+                <input type="hidden" name="_method" value="delete">
+                <button class="clear-completed">Clear completed</button>
+            </form>
+        </footer>
+    </section>
+    <script th:src="@{/webjars/todomvc-common/base.js}"></script>
+</body>
+</html>

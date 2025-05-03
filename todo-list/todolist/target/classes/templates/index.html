@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link rel="stylesheet" th:href="@{/webjars/todomvc-app-css/index.css}">
+</head>
+<body>
+    <section class="todoapp">
+        <header class="header">
+            <h1>todos</h1>
+            <form th:action="@{/}" method="post" th:object="${item}">
+                <input class="new-todo" 
+                       placeholder="What needs to be done?" 
+                       th:field="*{title}" 
+                       autofocus>
+            </form>
+        </header>
+        
+        <section class="main" th:if="${totalNumberOfItems > 0}">
+            <ul class="todo-list">
+                <li th:each="todo : ${todos}" 
+                    th:classappend="${todo.completed} ? 'completed' : ''">
+                    <div class="view">
+                        <form th:action="@{/{id}/toggle(id=${todo.id})}" method="post">
+                            <input type="checkbox" 
+                                   class="toggle" 
+                                   th:checked="${todo.completed}"
+                                   onchange="this.form.submit()">
+                        </form>
+                        <label th:text="${todo.title}"></label>
+                        <form th:action="@{/{id}/delete(id=${todo.id})}" method="post">
+                            <button class="destroy"></button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+        
+        <footer class="footer" th:if="${totalNumberOfItems > 0}">
+            <span class="todo-count">
+                <strong th:text="${numberOfActiveItems}"></strong> items left
+            </span>
+        </footer>
+    </section>
+</body>
+</html>
