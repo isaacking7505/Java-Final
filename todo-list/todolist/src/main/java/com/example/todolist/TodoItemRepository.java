@@ -1,9 +1,9 @@
 package com.example.todolist;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface TodoItemRepository extends CrudRepository<TodoItem, Long> {
+public interface TodoItemRepository extends JpaRepository<TodoItem, Long> {
     long countAllByCompleted(boolean completed);
-
-    // Removed the custom save method to avoid conflict with CrudRepository
+    List<TodoItem> findAllByCompleted(boolean completed);
 }
